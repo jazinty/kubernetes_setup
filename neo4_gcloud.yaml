@@ -15,7 +15,7 @@ spec:
         app: neo4j
     spec:
       containers:
-        - image: neo4j:v1
+        - image: gcr.io/firstime-171018/neo4j:v1
           name: neo4j
           env:
             - name: NEO4J_ROOT_PASSWORD
