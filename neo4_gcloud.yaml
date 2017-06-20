@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: neo4j
+  labels:
+    app: neo4j
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neo4j
+  template:
+    metadata:
+      labels:
+        app: neo4j
+    spec:
+      containers:
+        - image: neo4j:v1
+          name: neo4j
+          env:
+            - name: NEO4J_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j
+                  key: password
+          ports:
+            - containerPort: 7474
+              name: neo4j
+          volumeMounts:
+            - name: datadir
+              mountPath: /data
+      volumes:
+        - name: datadir
+          gcePersistentDisk:
+            pdName: neo4j-disk
+            fsType: ext4
